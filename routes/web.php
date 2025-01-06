@@ -16,8 +16,8 @@ Route::get('dashboard/add', function () {
         return view('createQuestions');
     })->middleware(['auth', 'verified'])->name('dashboard.add'); 
 
-Route::get('dashboard/servay', function () {
+Route::get('dashboard/survey', function () {
         return view('servayWizard');
-    })->middleware(['auth', 'verified'])->name('dashboard.servay'); 
+    })->middleware(['auth', 'verified'])->name('dashboard.survey'); 
 
 require __DIR__.'/auth.php';
