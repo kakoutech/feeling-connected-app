@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+    const ROLE_ADMIN = 'admin';
+    const ROLE_ORGANIZER = 'organizer';
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
@@ -45,4 +47,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+     // Optional helper method
+     public function isAdmin()
+     {
+         return $this->role === self::ROLE_ADMIN;
+     }
+
+     public function isOrganizer()
+     {
+         return $this->role === self::ROLE_ORGANIZER;
+     }
 }

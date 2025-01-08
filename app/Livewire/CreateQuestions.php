@@ -3,6 +3,8 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class CreateQuestions extends Component
 {
@@ -34,39 +36,57 @@ class CreateQuestions extends Component
 
     public function submit()
     {
-        $this->validate([
-            'questions.*.question_text' => 'required|string|max:255',
-            'questions.*.options.*' => 'required|string|max:255',
-            'servay_name'=> 'required|string|max:255',
-        ],
-        [
-            'required' => 'This field is required.',
-        ]);
+        $this->validate(
+            [
+                'questions.*.question_text' => 'required|string|max:255',
+                'questions.*.options.*' => 'required|string|max:255',
+                'servay_name' => 'required|string|max:255',
+            ],
+            [
+                'required' => 'This field is required.',
+            ]
+        );
+    
+        try {
+            DB::beginTransaction();
+            $userId = Auth::id();
 
-        // foreach ($this->questions as $questionData) {
-        //     $question = Question::create([
-        //         'question_text' => $questionData['question_text'],
-        //     ]);
-
-        //     foreach ($questionData['options'] as $optionText) {
-        //         Option::create([
-        //             'question_id' => $question->id,
-        //             'option_text' => $optionText,
-        //         ]);
-        //     }
-        // }
-
-        // Reset the form
-
-        $this->step++;
-        $this->reset(['questions', 'servay_name']);
-        
-        $this->mount(); // Reinitialize with one empty question
-
-        // Provide feedback
-        session()->flash('message', 'Questions and options saved successfully!');
+            $surveyId = DB::table('surveys')->insertGetId([
+                'name' => $this->servay_name,
+                'user_id' => $userId,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+    
+            foreach ($this->questions as $questionData) {
+                $questionId = DB::table('survey_questions')->insertGetId([
+                    'survey_id' => $surveyId,
+                    'question' => $questionData['question_text'],
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+    
+                foreach ($questionData['options'] as $optionText) {
+                    DB::table('survey_question_options')->insert([
+                        'survey_question_id' => $questionId,
+                        'option' => $optionText,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+                }
+            }
+            DB::commit();
+            $this->reset(['questions', 'servay_name']);
+            $this->mount();
+            session()->flash('message', 'Questions and options saved successfully!');
+            $this->step++;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            session()->flash('error', 'An error occurred while saving. Please try again.');
+            \Log::error('Survey submission error: ' . $e->getMessage());
+        }
     }
-
+    
 
     public function new_servay(){
         $this->step =1;

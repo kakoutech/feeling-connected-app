@@ -91,7 +91,12 @@
 
     @if ($step === 2)
         <div class='max-w-full p-6 mx-auto space-y-6 bg-white rounded-lg shadow'>
-            <p>Successfully Created a Survey</p>
+           
+    @if (session()->has('message'))
+    <div class="text-lg text-green-700 bg-green-100 rounded-lg " role="alert">
+        {{ session('message') }}
+    </div>
+@endif
                <button 
                wire:click='new_servay'
             class="px-6 py-2 text-sm text-white bg-green-600 rounded-md hover:bg-green-700"
@@ -100,5 +105,6 @@
         </button>
         </div>
     @endif
+
 
 </div>
