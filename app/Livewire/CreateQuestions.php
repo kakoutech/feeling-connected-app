@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Flasher\Toastr\Prime\ToastrInterface;
 
 class CreateQuestions extends Component
 {
@@ -46,9 +47,10 @@ class CreateQuestions extends Component
                 'required' => 'This field is required.',
             ]
         );
-    
+
         try {
             DB::beginTransaction();
+
             $userId = Auth::id();
 
             $surveyId = DB::table('surveys')->insertGetId([
@@ -57,7 +59,7 @@ class CreateQuestions extends Component
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
-    
+
             foreach ($this->questions as $questionData) {
                 $questionId = DB::table('survey_questions')->insertGetId([
                     'survey_id' => $surveyId,
@@ -65,7 +67,7 @@ class CreateQuestions extends Component
                     'created_at' => now(),
                     'updated_at' => now()
                 ]);
-    
+
                 foreach ($questionData['options'] as $optionText) {
                     DB::table('survey_question_options')->insert([
                         'survey_question_id' => $questionId,
@@ -76,17 +78,23 @@ class CreateQuestions extends Component
                 }
             }
             DB::commit();
+
             $this->reset(['questions', 'servay_name']);
+
             $this->mount();
+
+            toastr()->success('Questions and options saved successfully!.');
+
             session()->flash('message', 'Questions and options saved successfully!');
+
             $this->step++;
+
         } catch (\Exception $e) {
             DB::rollBack();
+            toastr()->error('An error occurred while saving. Please try again.');
             session()->flash('error', 'An error occurred while saving. Please try again.');
-            \Log::error('Survey submission error: ' . $e->getMessage());
         }
     }
-    
 
     public function new_servay(){
         $this->step =1;

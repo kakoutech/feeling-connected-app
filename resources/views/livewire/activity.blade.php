@@ -33,7 +33,7 @@
                     <div class="flex justify-center space-x-8">
                         <!-- Edit Button -->
                         {{-- href="{{ route('edit.route', ['id' => $row['id']]) }}"  --}}
-                        <a class="text-blue-500 hover:text-blue-700">
+                        <a class="text-blue-500 hover:text-blue-700" href="{{ route('dashboard.activity.edit', ['id' => $row['id']]) }}">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232a4.5 4.5 0 016.364 6.364l-11.778 11.778a2 2 0 01-.796.494l-5.64 1.416a1 1 0 01-1.208-1.208l1.416-5.64a2 2 0 01.494-.796L13.768 9.768a4.5 4.5 0 010-6.364z" />
                             </svg>
@@ -41,15 +41,12 @@
                         <!-- Delete Button -->
                                                 {{-- <form action="{{ route('delete.route', ['id' => $row['id']]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this?')"> --}}
 
-                        <form onsubmit="return confirm('Are you sure you want to delete this?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-500 hover:text-red-700">
+                
+                            <button type="submit" wire:click='deleteActivity({{ $row['id'] }})' class="text-red-500 hover:text-red-700">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </button>
-                        </form>
                     </div>
                 </td>
             </tr>

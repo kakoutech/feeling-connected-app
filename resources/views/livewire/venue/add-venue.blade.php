@@ -4,8 +4,8 @@
             <form wire:submit.prevent="saveData"  class="space-y-4">
                 <!-- Activity-->
                 <div>
-                    <label for="full-name" class="block text-sm font-medium text-gray-600">Activity Name</label>
-                    <input type="text" id="full-name" wire:model="name" placeholder="Enter your activity name"
+                    <label for="full-name" class="block text-sm font-medium text-gray-600">Venue Name</label>
+                    <input type="text" id="full-name" wire:model="name" placeholder="Enter your venue name"
                         class="w-full px-4 py-2 mt-1 text-gray-700 bg-gray-100 border rounded-lg focus:ring focus:ring-blue-200 focus:outline-none" />
                     @error('name')
                         <span class="text-sm text-red-600">{{ $message }}</span>
@@ -14,10 +14,10 @@
 
                 <!-- Venue -->
                 <div>
-                    <label for="full-name" class="block text-sm font-medium text-gray-600"> Venue</label>
-                    <input type="text" id="full-name" wire:model="venue" placeholder="Enter Venue"
+                    <label for="full-name" class="block text-sm font-medium text-gray-600"> Address</label>
+                    <input type="text" id="full-name" wire:model="address" placeholder="Enter Address"
                         class="w-full px-4 py-2 mt-1 text-gray-700 bg-gray-100 border rounded-lg focus:ring focus:ring-blue-200 focus:outline-none" />
-                    @error('venue')
+                    @error('address')
                         <span class="text-sm text-red-600">{{ $message }}</span>
                     @enderror
                 </div>
@@ -38,7 +38,7 @@
                 <div>
                     <button type="submit"
                         class="w-full px-4 py-2 mt-6 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-200">
-                        Create Activity
+                        Create Venue
                     </button>
                 </div>
             </form>

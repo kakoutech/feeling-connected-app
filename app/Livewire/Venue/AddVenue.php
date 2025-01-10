@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Livewire\Activity;
+namespace App\Livewire\Venue;
 
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
-use Flasher\Toastr\Prime\ToastrInterface;
 
-class AddActivity extends Component
+class AddVenue extends Component
 {
     public $name='';
-    public $venue='';
+    public $address='';
     public $postal_code='';
+
 
     public function saveData()
     {
@@ -18,7 +18,7 @@ class AddActivity extends Component
         $this->validate(
             [
                 'name' => 'required|string|max:255',
-                'venue' => 'required|string|max:255',
+                'address' => 'required|string|max:255',
                 'postal_code' => 'required|string',
             ],
             [
@@ -28,7 +28,7 @@ class AddActivity extends Component
 
         $payload = [
             'name' => $this->name,
-            'venue' => $this->venue,
+            'address' => $this->address,
             'postal_code' => $this->postal_code,
             'created_at' => now(),
             'updated_at' => now()
@@ -36,10 +36,10 @@ class AddActivity extends Component
         try{
             DB::beginTransaction();
 
-            $response= DB::table('activities')->insert($payload);
+            $response= DB::table('venues')->insert($payload);
             if($response){
-                toastr()->success('Activity Created Successfully!.');
-                redirect()->route('dashboard.activity');
+                toastr()->success('Venues Created Successfully!.');
+                redirect()->route('dashboard.venue');
                 $this->resetForm();
             }
             DB::commit();
@@ -51,14 +51,16 @@ class AddActivity extends Component
 
     }
 
+
     public function resetForm()
     {
         $this->name="";
-        $this->venue= "";
+        $this->address= "";
         $this->postal_code= "";
     }
+
     public function render()
     {
-        return view('livewire.activity.add-activity');
+        return view('livewire.venue.add-venue');
     }
 }
