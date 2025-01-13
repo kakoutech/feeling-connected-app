@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -11,7 +12,7 @@ class Venue extends Component
     public $rows = [];
 
     public function mount(){
-        $venues = DB::table('venues')->select('id','name','address', 'postal_code','created_at')->get()->map(function ($item) {
+        $venues = DB::table('venues')->where('user_id', Auth::id())->select('id','name','address', 'postal_code','created_at')->get()->map(function ($item) {
             return [
                 'id'=>$item->id,
                 $item->name,

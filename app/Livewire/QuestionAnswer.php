@@ -46,24 +46,12 @@ class QuestionAnswer extends Component
 
     public function submitAnswers()
     {
-        //   dd($this->allValuesArrayFromParent);
-        // $this->submittedAnswers = [];
-        // dd(  $this->questions);
-        $attendeeId =DB::table('attendees')->insertGetId([
-            'name' => $this->allValuesArrayFromParent['name'],
-            'email' => $this->allValuesArrayFromParent['email'],
-            'phone' => $this->allValuesArrayFromParent['phone'],
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-    
         foreach ($this->questions as $question) {
             $this->submittedAnswers[] = [
                'survey_question_id'   => $question['id'],
                'activity_id'   => $this->allValuesArrayFromParent['activityId'],
                'answer'        => $this->answers[$question['id']][0] ?? null,
-               'attendee_id' => $attendeeId,
-               'venue_id'=> 1,
+               'postal_code' => $this->allValuesArrayFromParent['passcode'],
                'created_at' => $this->allValuesArrayFromParent['date'],
                'updated_at' => now()
             ];

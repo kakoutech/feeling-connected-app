@@ -1,6 +1,6 @@
 <div>
       <div class="max-w-3xl p-6 mx-auto bg-white rounded-lg shadow">
-            <h2 class="mb-6 text-2xl font-bold text-gray-700">Add Activity</h2>
+            <h2 class="mb-6 text-2xl font-bold text-gray-700">Add Venue</h2>
             <form wire:submit.prevent="saveData"  class="space-y-4">
                 <!-- Activity-->
                 <div>

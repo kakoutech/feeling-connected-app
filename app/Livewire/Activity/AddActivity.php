@@ -5,12 +5,20 @@ namespace App\Livewire\Activity;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Flasher\Toastr\Prime\ToastrInterface;
+use Illuminate\Support\Facades\Auth;
 
 class AddActivity extends Component
 {
     public $name='';
-    public $venue='';
     public $postal_code='';
+    public $venue = '';
+    public $venues = [];
+
+
+    public function mount(){
+        $venues = DB::table('venues')->where('user_id', Auth::id())->select('id','name')->get()->toArray();
+        $this->venues = $venues;
+    }
 
     public function saveData()
     {
@@ -18,7 +26,7 @@ class AddActivity extends Component
         $this->validate(
             [
                 'name' => 'required|string|max:255',
-                'venue' => 'required|string|max:255',
+                'venue' => 'required',
                 'postal_code' => 'required|string',
             ],
             [
@@ -28,8 +36,9 @@ class AddActivity extends Component
 
         $payload = [
             'name' => $this->name,
-            'venue' => $this->venue,
+            'venue_id' => $this->venue,
             'postal_code' => $this->postal_code,
+            'user_id' => Auth::id(),
             'created_at' => now(),
             'updated_at' => now()
         ];
@@ -54,7 +63,7 @@ class AddActivity extends Component
     public function resetForm()
     {
         $this->name="";
-        $this->venue= "";
+        // $this->venue= "";
         $this->postal_code= "";
     }
     public function render()

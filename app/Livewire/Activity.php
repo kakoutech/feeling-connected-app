@@ -2,25 +2,37 @@
 
 namespace App\Livewire;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Activity extends Component
 {
-
-    public $headers = ['Id','Name', 'Venue', 'Postal Code', 'Created Date'];
+    public $headers = ['Id','Name', 'Postal Code','Venue', 'Created Date'];
     public $rows = [];
 
     public function mount(){
-        $activities = DB::table('activities')->select('id','name','venue', 'postal_code','created_at')->get()->map(function ($item) {
+        $activities = DB::table('activities')
+        ->join('venues', 'activities.venue_id', '=', 'venues.id')
+        ->where('activities.user_id', Auth::id())
+        ->select(
+            'activities.id as activity_id',
+            'activities.name as activity_name',
+            'venues.name as venue_name', 
+            'activities.postal_code',
+            'activities.created_at'
+        )
+        ->get()
+        ->map(function ($item) {
             return [
-                'id'=>$item->id,
-                $item->name,
-                $item->venue,
-                $item->postal_code,
-                $item->created_at,
+                'id' => $item->activity_id,
+                'name' => $item->activity_name,
+                'postal_code' => $item->postal_code,
+                'venue_name' => $item->venue_name,
+                'created_at' => $item->created_at ,
             ];
-        })->toArray();
+        })
+        ->toArray();
         $this->rows = $activities;
     }
 

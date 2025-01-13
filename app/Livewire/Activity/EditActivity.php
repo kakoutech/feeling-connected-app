@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Activity;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -11,14 +12,19 @@ class EditActivity extends Component
     public $venue = '';
     public $postal_code = '';
     public $id;
-    public function mount($id) // The mount method is called when the component is first initialized
+    public $venues = [];
+    public function mount($id)
     {
         $this->id = $id;
         $activity = DB::table("activities")->find($id);
         if ($activity) {
             $this->name = $activity->name;
-            $this->venue = $activity->venue;
+            $this->venue = $activity->venue_id;
             $this->postal_code = $activity->postal_code;
+                 $this->venues = DB::table('venues')
+                 ->where('user_id', Auth::id())
+                 ->select('id', 'name')
+                 ->get();
         } else {
             session()->flash('error', 'Activity not found.');
             toastr()->error('AActivity not found.');
@@ -31,7 +37,7 @@ class EditActivity extends Component
         $this->validate(
             [
                 'name' => 'required|string|max:255',
-                'venue' => 'required|string|max:255',
+                'venue' => 'required',
                 'postal_code' => 'required|string',
             ],
             [
@@ -41,7 +47,7 @@ class EditActivity extends Component
 
         $payload = [
             'name' => $this->name,
-            'venue' => $this->venue,
+            'venue_id' => $this->venue,
             'postal_code' => $this->postal_code,
             'created_at' => now(),
             'updated_at' => now()

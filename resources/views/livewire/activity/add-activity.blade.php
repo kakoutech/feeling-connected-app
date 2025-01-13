@@ -13,14 +13,18 @@
                 </div>
 
                 <!-- Venue -->
-                <div>
-                    <label for="full-name" class="block text-sm font-medium text-gray-600"> Venue</label>
-                    <input type="text" id="full-name" wire:model="venue" placeholder="Enter Venue"
-                        class="w-full px-4 py-2 mt-1 text-gray-700 bg-gray-100 border rounded-lg focus:ring focus:ring-blue-200 focus:outline-none" />
-                    @error('venue')
-                        <span class="text-sm text-red-600">{{ $message }}</span>
-                    @enderror
-                </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Select Venue</label>
+                        <select 
+                            wire:model="venue" 
+                            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            <option value="">Choose...</option>
+                            @foreach($venues as $option)
+                                <option value="{{ $option->id }}">{{ $option->name }}</option>
+                            @endforeach
+                        </select>
+                        @error("venue") <span class="text-sm text-red-500">{{ $message }}</span> @enderror
+                    </div>
 
 
                   <!-- Postal Code -->

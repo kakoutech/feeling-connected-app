@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Venue;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -30,6 +31,7 @@ class AddVenue extends Component
             'name' => $this->name,
             'address' => $this->address,
             'postal_code' => $this->postal_code,
+            'user_id' => Auth::id(),
             'created_at' => now(),
             'updated_at' => now()
         ];

@@ -12,6 +12,8 @@ class CreateQuestions extends Component
     public $questions = [];
     public $servay_name;
     public $step =1;
+    public $activity = '';
+    public $activities = [];
 
     public function mount()
     {
@@ -19,6 +21,9 @@ class CreateQuestions extends Component
             'question_text' => '',
             'options' => ['', '', '', ''],
         ];
+
+        $activities = DB::table('activities')->where('user_id', Auth::id())->select('id','name')->get()->toArray();
+        $this->activities = $activities;
     }
 
     public function addQuestion()
@@ -42,6 +47,7 @@ class CreateQuestions extends Component
                 'questions.*.question_text' => 'required|string|max:255',
                 'questions.*.options.*' => 'required|string|max:255',
                 'servay_name' => 'required|string|max:255',
+                'activity' => 'required'
             ],
             [
                 'required' => 'This field is required.',
@@ -56,6 +62,7 @@ class CreateQuestions extends Component
             $surveyId = DB::table('surveys')->insertGetId([
                 'name' => $this->servay_name,
                 'user_id' => $userId,
+                'activity_id' => $this->activity,
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
@@ -79,7 +86,7 @@ class CreateQuestions extends Component
             }
             DB::commit();
 
-            $this->reset(['questions', 'servay_name']);
+            $this->reset(['questions', 'servay_name', 'activity']);
 
             $this->mount();
 
