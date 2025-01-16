@@ -56,6 +56,15 @@ Route::get('dashboard/organiser/edit/{id}', function ($id) {
     })->middleware(['auth', 'verified'])->name('dashboard.organiser.edit');
 
 
+// FC Admin
+
+Route::get('dashboard/fc-admin', function () {
+    return view('fcAdmin');
+    })->middleware(['auth', 'verified'])->name('dashboard.fc-admin');
+
+
+// Public Route
+
 Route::get('dashboard/survey', function () {
         return view('servayWizard');
     })->middleware(['auth', 'verified'])->name('dashboard.survey');

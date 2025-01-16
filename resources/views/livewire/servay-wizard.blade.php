@@ -56,7 +56,7 @@
 
 
             <!-- Continue Button -->
-            <button wire:click="nextStep" class="px-6 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700">
+            <button wire:click="nextStep" class="px-6 py-2 text-white bg-black rounded-md">
                 Continue
             </button>
         </div>
@@ -66,7 +66,7 @@
     @if ($step === 2)
         <div>
             <h2 class="mb-4 text-lg font-semibold">Step 2: Start the Survey</h2>
-            <button wire:click="nextStep" class="px-6 py-2 text-white bg-green-600 rounded-md hover:bg-green-700">
+            <button wire:click="nextStep" class="px-6 py-2 text-white bg-black rounded-md">
                 Start Survey
             </button>
             @if (session()->has('message'))
@@ -81,7 +81,7 @@
 
     @if ($step === 4)
         <p> Thanks for submitting the form</p>
-        <button wire:click="initialStep" class="px-6 py-2 text-white bg-green-600 rounded-md hover:bg-green-700">
+        <button wire:click="initialStep" class="px-6 py-2 text-white bg-black rounded-md">
             Done
         </button>
     @endif

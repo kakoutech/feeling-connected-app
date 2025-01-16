@@ -50,7 +50,7 @@
         <!-- Submit Button -->
         <button 
             type="submit" 
-            class="px-6 py-2 mt-4 text-white bg-blue-600 rounded-md hover:bg-blue-700">
+            class="px-6 py-2 mt-4 text-white bg-black rounded-md">
             Submit Answers
         </button>
     </form>
