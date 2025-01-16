@@ -10,9 +10,9 @@ Route::view('profile', 'profile')
 
 Route::get('dashboard/add', function () {
         return view('createQuestions');
-    })->middleware(['auth', 'verified'])->name('dashboard.add'); 
+    })->middleware(['auth', 'verified'])->name('dashboard.add');
 
-// Activvity Routes
+// Activity Routes
 
 Route::get('dashboard/activity', function () {
         return view('activity');
@@ -39,6 +39,22 @@ Route::get('dashboard/venue/add', function () {
 Route::get('dashboard/venue/edit/{id}', function ($id) {
         return view('pages.venue.editVenue', ['id' => $id]);
     })->middleware(['auth', 'verified'])->name('dashboard.venue.edit');
+
+// Organizer Routes
+
+Route::get('dashboard/organiser', function () {
+    return view('organizer');
+    })->middleware(['auth', 'verified'])->name('dashboard.organiser');
+
+
+Route::get('dashboard/organiser/add', function () {
+        return view('pages.organizer.addOrganizer');
+    })->middleware(['auth', 'verified'])->name('dashboard.organiser.add');
+
+Route::get('dashboard/organiser/edit/{id}', function ($id) {
+        return view('pages.organizer.editOrganizer', ['id' => $id]);
+    })->middleware(['auth', 'verified'])->name('dashboard.organiser.edit');
+
 
 Route::get('dashboard/survey', function () {
         return view('servayWizard');

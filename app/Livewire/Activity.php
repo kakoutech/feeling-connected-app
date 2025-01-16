@@ -8,18 +8,19 @@ use Livewire\Component;
 
 class Activity extends Component
 {
-    public $headers = ['Id','Name', 'Postal Code','Venue', 'Created Date'];
+    public $headers = ['Id','Name','Venue','Organiser'];
     public $rows = [];
 
     public function mount(){
         $activities = DB::table('activities')
         ->join('venues', 'activities.venue_id', '=', 'venues.id')
+        ->join('users', 'activities.organizer_id', '=', 'users.id')
         ->where('activities.user_id', Auth::id())
         ->select(
             'activities.id as activity_id',
             'activities.name as activity_name',
             'venues.name as venue_name', 
-            'activities.postal_code',
+            'users.name as organizer_name',
             'activities.created_at'
         )
         ->get()
@@ -27,9 +28,8 @@ class Activity extends Component
             return [
                 'id' => $item->activity_id,
                 'name' => $item->activity_name,
-                'postal_code' => $item->postal_code,
                 'venue_name' => $item->venue_name,
-                'created_at' => $item->created_at ,
+                'organizer_name' => $item->organizer_name,
             ];
         })
         ->toArray();

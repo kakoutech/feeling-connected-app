@@ -49,9 +49,9 @@ class EditVenue extends Component
         ];
         try {
             DB::beginTransaction();
-            $activity = DB::table('venues')->where('id', $this->id)->first();
+            $venue = DB::table('venues')->where('id', $this->id)->first();
 
-            if ($activity) {
+            if ($venue) {
                 $response = DB::table('venues')->where('id', $this->id)->update($payload);
 
                 if ($response) {
@@ -68,10 +68,6 @@ class EditVenue extends Component
             toastr()->error($e->getMessage());
             DB::rollBack();
         }
-    }
-
-    public function backVenue(){
-        return redirect()->route('dashboard.venue');
     }
 
     public function render()

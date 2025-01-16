@@ -5,8 +5,8 @@
             <h2 class="mb-4 text-lg font-semibold">Step 1: Fill in the details</h2>
             <!-- Passcode Field -->
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700">Postal Code</label>
-                <input type="text" wire:model="passcode" placeholder="Enter Your Postal Code"
+                <label class="block text-sm font-medium text-gray-700">Post Code</label>
+                <input type="text" wire:model="passcode" placeholder="Enter Your Post Code"
                     class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 @error('passcode')
                     <span class="text-sm text-red-500">{{ $message }}</span>

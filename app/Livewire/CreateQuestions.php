@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Livewire;
 
 use Livewire\Component;
@@ -11,18 +10,24 @@ class CreateQuestions extends Component
 {
     public $questions = [];
     public $servay_name;
-    public $step =1;
+    public $step = 1;
     public $activity = '';
     public $activities = [];
+
+    public $optionTypes = [
+        'multiple_choice' => 'Multiple Choice',
+        'free_text' => 'Free Text',
+        'toggle' => 'Toggle',
+    ];
 
     public function mount()
     {
         $this->questions[] = [
             'question_text' => '',
-            'options' => ['', '', '', ''],
+            'option_type' => '',
+            'options' => [],
         ];
-
-        $activities = DB::table('activities')->where('user_id', Auth::id())->select('id','name')->get()->toArray();
+        $activities = DB::table('activities')->where('user_id', Auth::id())->select('id', 'name')->get()->toArray();
         $this->activities = $activities;
     }
 
@@ -30,14 +35,28 @@ class CreateQuestions extends Component
     {
         $this->questions[] = [
             'question_text' => '',
-            'options' => ['', '', '', ''],
+            'option_type' => '',
+            'options' => [],
         ];
+    }
+
+
+    public function addFields($index)
+    {
+        $selectedType = $this->questions[$index]['option_type'];
+        if ($selectedType == "Toggle") {
+            $this->questions[$index]['options'] = ['', ''];
+        } elseif ($selectedType == "Free Text") {
+            $this->questions[$index]['options'] = [];
+        } else {
+            $this->questions[$index]["options"] = ['', '', '', ''];
+        }
     }
 
     public function removeQuestion($index)
     {
         unset($this->questions[$index]);
-        $this->questions = array_values($this->questions); 
+        $this->questions = array_values($this->questions);
     }
 
     public function submit()
@@ -46,6 +65,7 @@ class CreateQuestions extends Component
             [
                 'questions.*.question_text' => 'required|string|max:255',
                 'questions.*.options.*' => 'required|string|max:255',
+                'questions.*.option_type' => 'required|string|max:255',
                 'servay_name' => 'required|string|max:255',
                 'activity' => 'required'
             ],
@@ -75,14 +95,30 @@ class CreateQuestions extends Component
                     'updated_at' => now()
                 ]);
 
-                foreach ($questionData['options'] as $optionText) {
+                $opt_type = $questionData['option_type'];
+
+                if (empty($questionData['options']) ){
                     DB::table('survey_question_options')->insert([
                         'survey_question_id' => $questionId,
-                        'option' => $optionText,
+                        'option' => '',
+                        'option_type' => $opt_type,
                         'created_at' => now(),
                         'updated_at' => now()
                     ]);
+                }else{
+                    foreach ($questionData['options'] as $optionText) {
+                        DB::table('survey_question_options')->insert([
+                            'survey_question_id' => $questionId,
+                            'option' => $optionText,
+                            'option_type' => $opt_type,
+                            'created_at' => now(),
+                            'updated_at' => now()
+                        ]);
+                    }
                 }
+            
+
+          
             }
             DB::commit();
 
@@ -95,7 +131,6 @@ class CreateQuestions extends Component
             session()->flash('message', 'Questions and options saved successfully!');
 
             $this->step++;
-
         } catch (\Exception $e) {
             DB::rollBack();
             toastr()->error('An error occurred while saving. Please try again.');
@@ -103,8 +138,9 @@ class CreateQuestions extends Component
         }
     }
 
-    public function new_servay(){
-        $this->step =1;
+    public function new_servay()
+    {
+        $this->step = 1;
     }
 
     public function render()

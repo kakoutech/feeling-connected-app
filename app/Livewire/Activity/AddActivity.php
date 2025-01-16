@@ -10,14 +10,17 @@ use Illuminate\Support\Facades\Auth;
 class AddActivity extends Component
 {
     public $name='';
-    public $postal_code='';
     public $venue = '';
     public $venues = [];
+    public $organizer = '';
+    public $organizers = [];
 
 
     public function mount(){
         $venues = DB::table('venues')->where('user_id', Auth::id())->select('id','name')->get()->toArray();
+        $organizers = DB::table('users')->where('role', 'organizer')->select('id','name')->get()->toArray();
         $this->venues = $venues;
+        $this->organizers = $organizers;
     }
 
     public function saveData()
@@ -27,7 +30,7 @@ class AddActivity extends Component
             [
                 'name' => 'required|string|max:255',
                 'venue' => 'required',
-                'postal_code' => 'required|string',
+                'organizer' => 'required',
             ],
             [
                 'required' => 'This field is required.',
@@ -37,7 +40,7 @@ class AddActivity extends Component
         $payload = [
             'name' => $this->name,
             'venue_id' => $this->venue,
-            'postal_code' => $this->postal_code,
+            'organizer_id' => $this->organizer,
             'user_id' => Auth::id(),
             'created_at' => now(),
             'updated_at' => now()
@@ -64,7 +67,6 @@ class AddActivity extends Component
     {
         $this->name="";
         // $this->venue= "";
-        $this->postal_code= "";
     }
     public function render()
     {

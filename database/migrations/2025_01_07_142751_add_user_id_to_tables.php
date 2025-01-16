@@ -12,15 +12,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('activities', function (Blueprint $table) {
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            if (!Schema::hasColumn('activities', 'user_id')) {
+                $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            }
         });
-
+    
         Schema::table('venues', function (Blueprint $table) {
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            if (!Schema::hasColumn('venues', 'user_id')) {
+                $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            }
         });
-
+    
         Schema::table('surveys', function (Blueprint $table) {
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            if (!Schema::hasColumn('surveys', 'user_id')) {
+                $table->foreignId('user_id')->after('name')->nullable()->constrained()->onDelete('cascade');
+            }
         });
     }
 
@@ -29,19 +35,27 @@ return new class extends Migration
      */
     public function down(): void
     {
-         Schema::table('activities', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
-            $table->dropColumn('user_id');
-        });
-
-        Schema::table('venues', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
-            $table->dropColumn('user_id');
-        });
-
-        Schema::table('survey_answers', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
-            $table->dropColumn('user_id');
-        });
+        // Schema::table('activities', function (Blueprint $table) {
+        //     // Skip dropping the foreign key if it doesn't exist
+        //     if (Schema::hasColumn('activities', 'user_id')) {
+        //         $table->dropForeign(['user_id']);
+        //     }
+        //     $table->dropColumn('user_id');
+        // });
+    
+        // Schema::table('venues', function (Blueprint $table) {
+        //     if (Schema::hasColumn('venues', 'user_id')) {
+        //         $table->dropForeign(['user_id']);
+        //     }
+        //     $table->dropColumn('user_id');
+        // });
+    
+        // Schema::table('surveys', function (Blueprint $table) {
+        //     if (Schema::hasColumn('surveys', 'user_id')) {
+        //         $table->dropForeign(['user_id']);
+        //     }
+        //     $table->dropColumn('user_id');
+        // });
+        
     }
 };

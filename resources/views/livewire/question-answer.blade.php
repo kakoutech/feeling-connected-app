@@ -11,12 +11,31 @@
                 <div class="space-y-2">
                     @foreach($question['options'] as $option)
                         <label class="flex items-center">
-                            <input 
+                        @if ($question['option_type'] == 'Toggle')
+                             <input 
+                                type="radio" 
+                                wire:model="answers.{{ $question['id'] }}" 
+                                value="{{ $option }}" 
+                                class="w-5 h-5 text-blue-600 form-checkbox">
+                            <span class="ml-3 text-gray-700">{{ $option }}</span>
+
+                        @elseif ($question['option_type'] == 'Multiple Choice')
+                              <input 
                                 type="checkbox" 
                                 wire:model="answers.{{ $question['id'] }}" 
                                 value="{{ $option }}" 
                                 class="w-5 h-5 text-blue-600 form-checkbox">
                             <span class="ml-3 text-gray-700">{{ $option }}</span>
+                        
+                        @elseif ($question['option_type'] == 'Free Text')
+                                    <textarea 
+                                        
+                                        wire:model="answers.{{ $question['id'] }}" 
+                                        rows="4" 
+                                        class="block w-full mt-1 border-gray-300 rounded-md shadow-sm resize-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                        placeholder="Enter your answer"></textarea>
+                        @endif
+                           
                         </label>
                     @endforeach
                 </div>

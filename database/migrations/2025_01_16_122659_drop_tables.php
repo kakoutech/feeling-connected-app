@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('surveys', function (Blueprint $table) {
-            $table->foreignId('activity_id')->after('name')->nullable()->constrained()->onDelete('cascade');
+        Schema::table('organisers', function (Blueprint $table) {
+            Schema::dropIfExists('organisers');
         });
     }
 
@@ -21,9 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('surveys', function (Blueprint $table) {
-            $table->dropForeign(['activity_id']);
-            $table->dropColumn('activity_id');
+        Schema::table('organisers', function (Blueprint $table) {
+            //
         });
     }
 };

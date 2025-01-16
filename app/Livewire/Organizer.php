@@ -2,34 +2,34 @@
 
 namespace App\Livewire;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
-class Venue extends Component
+class Organizer extends Component
 {
-    public $headers = ['Id','Name', 'Address', 'Post Code','created_at'];
+    public $headers = ['Id','Name', 'Email', 'Phone', 'created_at'];
+
     public $rows = [];
 
     public function mount(){
-        $venues = DB::table('venues')->where('user_id', Auth::id())->select('id','name','address', 'postal_code','created_at')->get()->map(function ($item) {
+        $organizer = DB::table('users')->where('role', 'organizer')->select('id','name','email', 'phone','created_at')->get()->map(function ($item) {
             return [
                 'id'=>$item->id,
                 $item->name,
-                $item->address,
-                $item->postal_code,
+                $item->email,
+                $item->phone,
                 $item->created_at,
             ];
         })->toArray();
-        $this->rows = $venues;
+        $this->rows = $organizer;
     }
 
-    public function deleteVenue($id) {
+    public function deleteOrganizer($id) {
         try{
             DB::beginTransaction();
-            $result =   DB::table('venues')->where('id', $id)->delete();
+            $result =   DB::table('users')->where('id', $id)->delete();
             if($result){
-                toastr()->success('Venue deleted successfully!');
+                toastr()->success('Organiser deleted successfully!');
                 DB::commit();
                 $this->mount();
             }
@@ -40,9 +40,8 @@ class Venue extends Component
         }
 
     }
-
     public function render()
     {
-        return view('livewire.venue');
+        return view('livewire.organizer');
     }
 }

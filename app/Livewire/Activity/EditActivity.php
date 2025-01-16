@@ -10,9 +10,11 @@ class EditActivity extends Component
 {
     public $name = '';
     public $venue = '';
-    public $postal_code = '';
     public $id;
     public $venues = [];
+    public $organizers = [];
+    public $organizer = '';
+
     public function mount($id)
     {
         $this->id = $id;
@@ -20,9 +22,13 @@ class EditActivity extends Component
         if ($activity) {
             $this->name = $activity->name;
             $this->venue = $activity->venue_id;
-            $this->postal_code = $activity->postal_code;
-                 $this->venues = DB::table('venues')
+            $this->organizer = $activity->organizer_id;
+            $this->venues = DB::table('venues')
                  ->where('user_id', Auth::id())
+                 ->select('id', 'name')
+                 ->get();
+            $this->organizers = DB::table('users')
+                 ->where('role', "organizer")
                  ->select('id', 'name')
                  ->get();
         } else {
@@ -38,7 +44,7 @@ class EditActivity extends Component
             [
                 'name' => 'required|string|max:255',
                 'venue' => 'required',
-                'postal_code' => 'required|string',
+                'organizer' => 'required',
             ],
             [
                 'required' => 'This field is required.',
@@ -48,7 +54,7 @@ class EditActivity extends Component
         $payload = [
             'name' => $this->name,
             'venue_id' => $this->venue,
-            'postal_code' => $this->postal_code,
+            'organizer_id' => $this->organizer,
             'created_at' => now(),
             'updated_at' => now()
         ];
@@ -73,10 +79,6 @@ class EditActivity extends Component
             toastr()->error($e->getMessage());
             DB::rollBack();
         }
-    }
-
-    public function backActivity(){
-        return redirect()->route('dashboard.activity');
     }
 
     public function render()

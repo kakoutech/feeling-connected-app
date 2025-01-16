@@ -17,17 +17,17 @@ class QuestionAnswer extends Component
         $results = DB::table('survey_questions as sq')
             ->join('survey_question_options as sqo', 'sqo.survey_question_id', '=', 'sq.id')
             ->where('sq.survey_id',$surveyId)
-            ->select('sq.id', 'sq.question', 'sqo.option')
+            ->select('sq.id', 'sq.question', 'sqo.option', 'sqo.option_type')
             ->get();
 
         $this->questions = $results->groupBy('id')->map(function ($questionGroup) {
             return [
                 'id' => $questionGroup->first()->id,
                 'text' => $questionGroup->first()->question,
+                'option_type' =>$questionGroup->first()->option_type,
                 'options' => $questionGroup->pluck('option')->toArray(),
             ];
         })->values()->toArray();
-
         // dd( $this->questions);
 
         // $this->questions = [
@@ -58,6 +58,7 @@ class QuestionAnswer extends Component
         }
         DB::table('survey_answers')->insert($this->submittedAnswers);
         $this->dispatch('nextStep');
+        toastr()->success('Your record submitted successfully!.');
 
         session()->flash('message', 'Your answers have been submitted!');
     }

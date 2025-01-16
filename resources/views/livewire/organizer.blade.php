@@ -1,8 +1,8 @@
 <div class="max-w-full p-6 mx-auto space-y-6 bg-white rounded-lg shadow">
     {{-- To attain knowledge, add things every day; To attain wisdom, subtract things every day. --}}
 
-    <a href="{{ route('dashboard.activity.add') }}">
-        <x-primary-button>Create Activity</x-primary-button>
+    <a href="{{ route('dashboard.organiser.add') }}">
+        <x-primary-button>Create Organiser</x-primary-button>
     </a>
 
     <table class="w-full border-collapse rounded-lg shadow-md table-auto">
@@ -32,9 +32,11 @@
                     <td class="px-6 py-4 text-center text-gray-700 border-b border-gray-300">
                         <div class="flex justify-center space-x-4">
                             <!-- Edit Button -->
+
+
                             <a class="text-blue-500 hover:text-blue-700"
-                                href="{{ route('dashboard.activity.edit', ['id' => $row['id']]) }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none"
+                                href="{{ route('dashboard.organiser.edit', ['id' => $row['id']]) }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none"
                                     width="35" height="35">
                                     <circle cx="16.0527" cy="16.1221" r="15.5" fill="black" />
                                     <path fillRule="evenodd" clipRule="evenodd"
@@ -42,7 +44,8 @@
                                         fill="white" />
                                 </svg>
                             </a>
-                            <button type="submit" wire:click='deleteActivity({{ $row['id'] }})'
+                            <!-- Delete Button -->
+                            <button type="submit" wire:click='deleteOrganizer({{ $row['id'] }})'
                                 class="text-red-500 hover:text-red-700">
                                 <svg width="35" height="35" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
