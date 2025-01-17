@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Organizer;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -10,13 +11,12 @@ class EditOrganizer extends Component
     public $name='';
     public $email='';
     public $phone='';
-    public $role='organizer';
     public $id='';
 
     public function mount($id)
     {
         $this->id = $id;
-        $organizer = DB::table("users")->find($id);
+        $organizer = DB::table("organisers")->find($id);
         if ($organizer) {
             $this->name = $organizer->name;
             $this->email = $organizer->email;
@@ -46,17 +46,16 @@ class EditOrganizer extends Component
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
-            'role' => $this->role,
-            'password' => "",
+            'fc_Admin_id' => Auth::id(),
             'created_at' => now(),
             'updated_at' => now()
         ];
         try {
             DB::beginTransaction();
-            $organizer = DB::table('users')->where('id', $this->id)->first();
+            $organizer = DB::table('organisers')->where('id', $this->id)->first();
 
             if ($organizer) {
-                $response = DB::table('users')->where('id', $this->id)->update($payload);
+                $response = DB::table('organisers')->where('id', $this->id)->update($payload);
 
                 if ($response) {
                     toastr()->success('Organiser Updated Successfully!');

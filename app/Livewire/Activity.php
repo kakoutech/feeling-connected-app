@@ -10,29 +10,56 @@ class Activity extends Component
 {
     public $headers = ['Id','Name','Venue','Organiser'];
     public $rows = [];
+    public $user_role;
 
     public function mount(){
-        $activities = DB::table('activities')
-        ->join('venues', 'activities.venue_id', '=', 'venues.id')
-        ->join('users', 'activities.organizer_id', '=', 'users.id')
-        ->where('activities.user_id', Auth::id())
-        ->select(
-            'activities.id as activity_id',
-            'activities.name as activity_name',
-            'venues.name as venue_name', 
-            'users.name as organizer_name',
-            'activities.created_at'
-        )
-        ->get()
-        ->map(function ($item) {
-            return [
-                'id' => $item->activity_id,
-                'name' => $item->activity_name,
-                'venue_name' => $item->venue_name,
-                'organizer_name' => $item->organizer_name,
-            ];
-        })
-        ->toArray();
+        $this->user_role = Auth::user()->role;
+
+        if($this->user_role ==="admin"){
+            $activities = DB::table('activities')
+            ->join('venues', 'activities.venue_id', '=', 'venues.id')
+            ->join('organisers', 'activities.organiser_id', '=', 'organisers.id')
+            ->select(
+                'activities.id as activity_id',
+                'activities.name as activity_name',
+                'venues.name as venue_name', 
+                'organisers.name as organizer_name',
+                'activities.created_at'
+            )
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'id' => $item->activity_id,
+                    'name' => $item->activity_name,
+                    'venue_name' => $item->venue_name,
+                    'organizer_name' => $item->organizer_name,
+                ];
+            })
+            ->toArray();
+        }else{
+            $activities = DB::table('activities')
+            ->join('venues', 'activities.venue_id', '=', 'venues.id')
+            ->join('organisers', 'activities.organiser_id', '=', 'organisers.id')
+            ->where('activities.user_id', Auth::id())
+            ->select(
+                'activities.id as activity_id',
+                'activities.name as activity_name',
+                'venues.name as venue_name', 
+                'organisers.name as organizer_name',
+                'activities.created_at'
+            )
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'id' => $item->activity_id,
+                    'name' => $item->activity_name,
+                    'venue_name' => $item->venue_name,
+                    'organizer_name' => $item->organizer_name,
+                ];
+            })
+            ->toArray();
+        }
+
         $this->rows = $activities;
     }
 

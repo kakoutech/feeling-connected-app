@@ -18,7 +18,7 @@ class AddActivity extends Component
 
     public function mount(){
         $venues = DB::table('venues')->where('user_id', Auth::id())->select('id','name')->get()->toArray();
-        $organizers = DB::table('users')->where('role', 'organizer')->select('id','name')->get()->toArray();
+        $organizers = DB::table('organisers')->where('fc_admin_id', Auth::id())->select('id','name')->get()->toArray();
         $this->venues = $venues;
         $this->organizers = $organizers;
     }
@@ -40,7 +40,7 @@ class AddActivity extends Component
         $payload = [
             'name' => $this->name,
             'venue_id' => $this->venue,
-            'organizer_id' => $this->organizer,
+            'organiser_id' => $this->organizer,
             'user_id' => Auth::id(),
             'created_at' => now(),
             'updated_at' => now()

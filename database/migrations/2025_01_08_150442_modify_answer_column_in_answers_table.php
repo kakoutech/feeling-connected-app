@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('survey_answers', function (Blueprint $table) {
-            $table->string('answer')->nullable()->change(); 
-        });
+          // Modify the column to allow NULL values
+          Schema::table('survey_answers', function (Blueprint $table) {
+              $table->string('answer')->nullable(false)->change();
+          });
     }
 
     /**
@@ -22,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('survey_answers', function (Blueprint $table) {
-            $table->string('answer')->nullable(false)->change();
+            $table->string('answer')->nullable()->change();
         });
     }
 };

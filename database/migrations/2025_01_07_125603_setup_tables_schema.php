@@ -87,6 +87,5 @@ return new class extends Migration
         Schema::dropIfExists('activities');
         Schema::dropIfExists('admins');
         Schema::dropIfExists('attendees');
-        Schema::dropIfExists('organisers');
     }
 };

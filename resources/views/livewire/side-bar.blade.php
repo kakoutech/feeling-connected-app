@@ -61,7 +61,8 @@
                                         Organiser
                                     </a>
 
-                                          <a href="{{ route('dashboard.fc-admin') }}" wire:navigate
+                                    @if ($user_role ==="admin")
+                                             <a href="{{ route('dashboard.fc-admin') }}" wire:navigate
                                         class="w-full flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg
                                         @if (request()->routeIs('dashboard.fc-admin')) bg-gray-100 @else hover:bg-gray-100 @endif
                                         dark:hover:bg-neutral-900 dark:text-neutral-200 dark:hover:text-neutral-300">
@@ -83,6 +84,8 @@
                                         FC Admin
                                     </a>
                               
+                                    @endif
+                               
 
                                     <a href="{{ route('dashboard.venue') }}" wire:navigate
                                         class="w-full flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg

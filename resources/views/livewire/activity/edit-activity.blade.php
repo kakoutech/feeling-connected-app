@@ -4,7 +4,7 @@
             <form wire:submit.prevent="editActivity"  class="space-y-4">
                 <!-- Activity-->
                 <div>
-                    <label for="full-name" class="block text-sm font-medium text-gray-600">Activity Name</label>
+                    <label for="full-name" class="block text-sm font-medium text-gray-600 cursor-text">Activity Name</label>
                     <input type="text" id="full-name" wire:model="name" placeholder="Enter your activity name" value="{{ old('name', $name) }}"
                         class="w-full px-4 py-2 mt-1 text-gray-700 bg-gray-100 border rounded-lg focus:ring focus:ring-blue-200 focus:outline-none" />
                     @error('name')

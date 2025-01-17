@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('role')->default('fc_admin');
+        Schema::table('activities', function (Blueprint $table) {
+            $table->foreignId('organiser_id')->nullable()->constrained()->onDelete('cascade');
         });
+        
     }
 
     /**
@@ -21,8 +22,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('role');
+        Schema::table('activities', function (Blueprint $table) {
+            $table->dropForeign(['organiser_id']);
+
+            $table->dropColumn('organiser_id');
         });
     }
 };

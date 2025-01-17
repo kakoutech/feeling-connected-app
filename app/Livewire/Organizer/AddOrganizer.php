@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Organizer;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -10,7 +11,6 @@ class AddOrganizer extends Component
     public $name='';
     public $email='';
     public $phone='';
-    public $role='organizer';
 
     public function saveData()
     {
@@ -30,15 +30,14 @@ class AddOrganizer extends Component
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
-            'role' => $this->role,
-            'password' => "",
+            'fc_Admin_id' => Auth::id(),
             'created_at' => now(),
             'updated_at' => now()
         ];
         try{
             DB::beginTransaction();
 
-            $response= DB::table('users')->insert($payload);
+            $response= DB::table('organisers')->insert($payload);
             if($response){
                 toastr()->success('Organiser Created Successfully!.');
                 redirect()->route('dashboard.organiser');

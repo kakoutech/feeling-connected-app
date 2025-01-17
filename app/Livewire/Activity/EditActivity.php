@@ -22,13 +22,13 @@ class EditActivity extends Component
         if ($activity) {
             $this->name = $activity->name;
             $this->venue = $activity->venue_id;
-            $this->organizer = $activity->organizer_id;
+            $this->organizer = $activity->organiser_id;
             $this->venues = DB::table('venues')
                  ->where('user_id', Auth::id())
                  ->select('id', 'name')
                  ->get();
-            $this->organizers = DB::table('users')
-                 ->where('role', "organizer")
+            $this->organizers = DB::table('organisers')
+                 ->where('fc_admin_id', Auth::id())
                  ->select('id', 'name')
                  ->get();
         } else {
@@ -54,7 +54,7 @@ class EditActivity extends Component
         $payload = [
             'name' => $this->name,
             'venue_id' => $this->venue,
-            'organizer_id' => $this->organizer,
+            'organiser_id' => $this->organizer,
             'created_at' => now(),
             'updated_at' => now()
         ];

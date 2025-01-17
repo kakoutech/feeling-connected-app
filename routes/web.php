@@ -63,6 +63,18 @@ Route::get('dashboard/fc-admin', function () {
     })->middleware(['auth', 'verified'])->name('dashboard.fc-admin');
 
 
+Route::get('dashboard/fc-admin/add', function (){
+    return view('pages.fcAdmin.addFcAdmin');
+
+})->middleware(['auth', 'verified'])
+    ->name('dashboard.fc_admin.add');
+
+
+Route::get('dashboard/fc-admin/edit/{id}', function ($id) {
+        return view('pages.fcAdmin.editFcAdmin', ['id' => $id]);
+    })->middleware(['auth', 'verified'])->name('dashboard.fc_admin.edit');
+
+
 // Public Route
 
 Route::get('dashboard/survey', function () {
