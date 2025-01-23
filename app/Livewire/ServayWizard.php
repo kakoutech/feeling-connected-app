@@ -3,57 +3,78 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\DB;
 
 class ServayWizard extends Component
 {
     public $step = 1;
-    public $dropdowns = [];
+    public $allValuesArray = [];
     public $date;
     public $passcode;
-
-    public $dropdownOptions = [
-        ['label' => 'Select Option 1', 'options' => ['Option A', 'Option B', 'Option C']],
-        ['label' => 'Select Option 2', 'options' => ['Option 1', 'Option 2', 'Option 3']],
-        ['label' => 'Select Option 3', 'options' => ['Value X', 'Value Y', 'Value Z']],
-    ];
+    public $surveyId = -1;
+    public $selected_activity;
+    public $activitiesFromDb = [];
+    public $selected_survey;
+    public $surveysAgainstActivity = [];
 
     protected $listeners = ['nextStep'];
 
     public function mount()
     {
-        $this->dropdowns = array_fill(0, count($this->dropdownOptions), null);
+        $activitiesFromDb = DB::table('activities')->select('id', 'name')->get()->toArray();
+        $this->activitiesFromDb = $activitiesFromDb;
+    }
+
+    public function getSurveyAgainstSelectedActivity()
+    {
+        $this->selected_survey = null;
+        $this->surveysAgainstActivity = [];
+        $surveys = DB::table('surveys')->where('activity_id', $this->selected_activity)->select('id', 'name')->get()->toArray();
+        $this->surveysAgainstActivity = $surveys;
+    }
+
+    public function getAllValues()
+    {
+        return [
+            "activityId" => $this->selected_activity,
+            "passcode" => $this->passcode,
+            "date" => $this->date,
+        ];
     }
 
     public function nextStep()
     {
         $this->validateStep();
         $this->step++;
+        if ($this->step === 3) {
+            $this->surveyId = $this->selected_survey;
+            $this->allValuesArray = $this->getAllValues();
+        }
     }
 
-    public function initialStep(){
-        $this->dropdowns = [];
+    public function initialStep()
+    {
         $this->date = '';
         $this->passcode = '';
         $this->step = 1;
+        $this->selected_activity = null;
+        $this->selected_survey = null;
+        $this->surveysAgainstActivity = [];
     }
-
     public function validateStep()
     {
         if ($this->step === 1) {
-            $this->validate([
-                'dropdowns.*' => 'required',
-                'date' => 'required|date',
-            ],
-            [
-                'required' => 'This field is required.', 
-            ]);
-        } elseif ($this->step === 2) {
-            $this->validate([
-                'passcode' => 'required|min:4',
-            ],
-            [
-                'required' => 'This field is required.',
-            ]);
+            $this->validate(
+                [
+                    'selected_activity' => 'required',
+                    'selected_survey' => 'required',
+                    'date' => 'required|date',
+                    'passcode' => 'required|string',
+                ],
+                [
+                    'required' => 'This field is required.',
+                ]
+            );
         }
     }
 

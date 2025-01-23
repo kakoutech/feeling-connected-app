@@ -33,8 +33,14 @@ new class extends Component
                     <x-nav-link :href="route('dashboard.add')" :active="request()->routeIs('dashboard.add')" wire:navigate>
                         {{ __('Add Survey') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('dashboard.survey')" :active="request()->routeIs('dashboard.survey')" wire:navigate>
-                        {{ __('Fill Survey') }}
+                    <x-nav-link :href="route('dashboard.activity')" :active="request()->routeIs('dashboard.activity')" wire:navigate>
+                        {{ __('Activity') }}
+                    </x-nav-link>
+                      <x-nav-link :href="route('dashboard.venue')" :active="request()->routeIs('dashboard.venue')" wire:navigate>
+                        {{ __('Venue') }}
+                    </x-nav-link>
+                        <x-nav-link :href="route('dashboard.organiser')" :active="request()->routeIs('dashboard.organiser')" wire:navigate>
+                        {{ __('Organiser') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -87,8 +93,14 @@ new class extends Component
             <x-responsive-nav-link :href="route('dashboard.add')" :active="request()->routeIs('dashboard.add')" wire:navigate>
                 {{ __('Add Survey') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('dashboard.survey')" :active="request()->routeIs('dashboard.survey')" wire:navigate>
-                {{ __('Fill Survey') }}
+            <x-responsive-nav-link :href="route('dashboard.activity')" :active="request()->routeIs('dashboard.activity')" wire:navigate>
+                {{ __('Activity') }}
+            </x-responsive-nav-link>
+                 <x-responsive-nav-link :href="route('dashboard.venue')" :active="request()->routeIs('dashboard.venue')" wire:navigate>
+                {{ __('Venue') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('dashboard.organiser')" :active="request()->routeIs('dashboard.organiser')" wire:navigate>
+                {{ __('Organiser') }}
             </x-responsive-nav-link>
         </div>
 

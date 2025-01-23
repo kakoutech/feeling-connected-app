@@ -22,7 +22,7 @@ test('users can authenticate using the login screen', function () {
 
     $component
         ->assertHasNoErrors()
-        ->assertRedirect(route('dashboard.add', absolute: false));
+        ->assertRedirect(route('dashboard.organiser', absolute: false));
 
     $this->assertAuthenticated();
 });

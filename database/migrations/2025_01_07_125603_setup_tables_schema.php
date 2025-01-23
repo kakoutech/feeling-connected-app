@@ -11,24 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Organisers Table
-        Schema::create('organisers', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->timestamps();
-        });
 
         // Attendees Table
         Schema::create('attendees', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('phone');
-            $table->timestamps();
-        });
-
-        // Admin Table
-        Schema::create('admins', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
@@ -102,6 +87,5 @@ return new class extends Migration
         Schema::dropIfExists('activities');
         Schema::dropIfExists('admins');
         Schema::dropIfExists('attendees');
-        Schema::dropIfExists('organisers');
     }
 };
